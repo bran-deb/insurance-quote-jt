@@ -77,13 +77,31 @@ UI.prototype.mostrarMensaje = (mensaje, tipo) => {
 }
 
 UI.prototype.mostrarResultado = (total, seguro) => {
+
+    const { marca, year, tipo } = seguro
+    let textoMarca
+    switch (marca) {
+        case '1':
+            textoMarca = 'Americano'
+            break;
+        case '2':
+            textoMarca = 'Asiatico'
+            break
+        case '3':
+            textoMarca = 'Europeo'
+        default:
+            break;
+    }
     //crear el resultado
     const div = document.createElement('div')
     div.classList.add('mt-10')
 
     div.innerHTML = `
     <p class="header">tu resumen</p>
-    <p class="font-bold">Total: ${total}</p>
+    <p class="font-bold">Marca:<span class="font-normal">  ${textoMarca}</span></p>
+    <p class="font-bold">Año:<span class="font-normal">  ${year}</span></p>
+    <p class="font-bold">Tipo:<span class="font-normal capitalize">  ${tipo}</span></p>
+    <p class="font-bold">Total:<span class="font-normal"> $ ${total}</span></p>
     `
     const resultado = document.querySelector('#resultado')
 
@@ -126,6 +144,12 @@ function cotizarSeguro(e) {
         return
     }
     ui.mostrarMensaje('Cotizando...', 'correcto')
+
+    //ocultar cotizaciones previas
+    const resultados = document.querySelector('#resultado div')
+    if (resultados != null) {
+        resultados.remove()
+    }
 
     const seguro = new Seguro(marca, year, tipo);
     //instanciar el seguro
